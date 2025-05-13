@@ -1,4 +1,4 @@
-﻿using System.Net.Http.Headers;
+using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
@@ -10,7 +10,7 @@ var config = new ConfigurationBuilder()
     .AddUserSecrets<Program>()
     .Build();
 
-var clientId = config["Okta:ClientId"];
+var clientId = config["Okta:ClientId"]!;
 var domain = config["Okta:Domain"];
 var username = config["Okta:Username"];
 var password = config["Okta:Password"];
@@ -32,7 +32,7 @@ var response = await client.PostAsync($"{domain}/api/v1/authn",
 
 var json = await response.Content.ReadAsStringAsync();
 var result = JsonDocument.Parse(json);
-var sessionToken = result.RootElement.GetProperty("sessionToken").GetString();
+var sessionToken = result.RootElement.GetProperty("sessionToken").GetString()!;
 
 // Step 2 - PKCE parameters
 static string Base64UrlEncode(byte[] input)
